@@ -269,6 +269,13 @@ FCelestialPosition UOrbitCalculations::GetSkyPosition(double Latitude, double Lo
 
 }
 
+// Since we are only calculating one single positon for the Sky (RA/Dec = 0,0), avoid using
+// Azimuth to set Yaw angle on a rotator, or else the entire Sky dome will rotate around that Azimuth.
+// Instead we project Azimuth and Elevation into a 2D plane using basic trigonometry and compensate
+// the angle on Roll to move the object to that point instead. It's not perfect positioning (especially on poles)
+// but else we would have to render star by star, which would be unfeasible for the scope of this project.
+// One could use the same function above (GetSkyPosition) to get any star position, just need to know
+// the star's Right Ascension and Declination for that.
 
 FRotator UOrbitCalculations::GetRotatorForSky(FCelestialPosition SkyPosition)
 {
